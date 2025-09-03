@@ -26,41 +26,6 @@ void AWeapon::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherA
 
 
 
-
-	if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("========= Workd"));
-	}
-
-
-
-
-	if (OtherActor) {
-
-		ANinja* Ninja = Cast<ANinja>(OtherActor);
-
-		if (Ninja) {
-			UE_LOG(LogTemp, Warning, TEXT("Ninja"));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Item Get!"));
-
-
-			
-			Equip(Ninja, FName("RightHandSocket"));
-
-		}
-
-	}
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 
@@ -83,7 +48,7 @@ void AWeapon::Equip(class ANinja* Char, FName SocketName) {
 		// Attach the weapon to the character's hand
 	
 		FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget, true);
-		ItemMesh->AttachToComponent(Char->GetMesh(), AttachRules, FName("RightHandSocket"));
+		ItemMesh->AttachToComponent(Char->GetMesh(), AttachRules, SocketName);
 
 		
 

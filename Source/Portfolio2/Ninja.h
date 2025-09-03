@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Ninja.generated.h"
 
+
 UCLASS()
 class PORTFOLIO2_API ANinja : public ACharacter
 {
@@ -39,4 +40,9 @@ public:
 
 	void LookUp(float Value);
 	void MoveRight(float Value);
+	void PickupEquipItem();
+	void SetEquippedWeapon(class AItem* ItemToSet);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ITemWeapon")
+	class AItem* Weapon;
 };

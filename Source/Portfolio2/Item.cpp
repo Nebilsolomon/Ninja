@@ -61,16 +61,25 @@ void AItem::Tick(float DeltaTime)
 
 
 
-void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
-	UE_LOG(LogTemp, Warning, TEXT("OnOverlapBegin"));
+void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+    UE_LOG(LogTemp, Warning, TEXT("OnOverlapBegin"));
 
-	if(GEngine){
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Item Overlap"));
-	}
+    if (GEngine) {
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Item Overlap"));
+    }
 
-	
+    ANinja* Ninja = Cast<ANinja>(OtherActor);
+
+    if (Ninja) {
+
+        Ninja->SetEquippedWeapon(this);
+
+      
+
+
+ 
+ }
 }
-
 void AItem::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex){
 	UE_LOG(LogTemp, Warning, TEXT("OnOverlapEnd"));
 }

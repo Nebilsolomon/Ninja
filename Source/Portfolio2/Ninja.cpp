@@ -4,6 +4,7 @@
 #include "Ninja.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Weapon.h"
 
 
 
@@ -51,6 +52,8 @@ void ANinja::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ANinja::Turn);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ANinja::LookUp);
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
+	
+	PlayerInputComponent->BindAction(TEXT("Equip"), IE_Released, this, &ANinja::PickupEquipItem);
 
 }
 
@@ -108,3 +111,38 @@ void ANinja::LookUp(float Value){
 	AddControllerPitchInput(Value);
 }
 
+
+
+void ANinja::PickupEquipItem() {
+
+
+	if (Weapon) {
+
+		AWeapon* MyWeapon = Cast<AWeapon>(Weapon);
+
+		
+
+		if (MyWeapon) {
+       
+			MyWeapon->Equip(this, FName("RightHandSocket"));
+
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("Weapon Equipped"));
+
+
+		}
+
+		
+	}
+
+
+
+}
+
+
+
+void ANinja::SetEquippedWeapon(AItem* ItemToSet)
+
+{
+	Weapon = ItemToSet;
+}
