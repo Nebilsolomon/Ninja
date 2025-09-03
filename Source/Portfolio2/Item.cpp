@@ -4,20 +4,39 @@
 #include "Item.h"
 #include "Components/SphereComponent.h"
 #include "Ninja.h"
+#include "GameFramework/CharacterMovementComponent.h" // <-- IMPORTANT include
+
+
+
 // Sets default values
 AItem::AItem()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+    // Set this actor to call Tick() every frame
+    PrimaryActorTick.bCanEverTick = true;
 
+    // Create mesh and set as root
+    ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshG"));
+    RootComponent = ItemMesh;
 
-	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshG"));
-	RootComponent = ItemMesh;
+    // Disable mesh collision
+    ItemMesh->SetSimulatePhysics(false);
+    ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
-	Sphere->SetupAttachment(RootComponent);
+    // Create Sphere component for overlap detection
+    Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
+    Sphere->SetupAttachment(RootComponent);
 
+    // Configure sphere for overlaps
+    Sphere->InitSphereRadius(100.f); // adjust size if needed
+    Sphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    Sphere->SetCollisionObjectType(ECC_WorldDynamic);
+    Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+    Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+    Sphere->SetGenerateOverlapEvents(true);
 }
+
+
+
 
 // Called when the game starts or when spawned
 void AItem::BeginPlay()
@@ -27,6 +46,7 @@ void AItem::BeginPlay()
 
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnOverlapBegin);
 	Sphere->OnComponentEndOverlap.AddDynamic(this, &AItem::OnOverlapEnd);
+	
 	
 }
 
@@ -44,15 +64,8 @@ void AItem::Tick(float DeltaTime)
 void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
 	UE_LOG(LogTemp, Warning, TEXT("OnOverlapBegin"));
 
-	if (OtherActor) {
-
-		ANinja* Ninja = Cast<ANinja>(OtherActor);
-		if (Ninja) {
-			UE_LOG(LogTemp, Warning, TEXT("Ninja"));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Item Get!"));
-			this->Destroy();
-		}
-
+	if(GEngine){
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Item Overlap"));
 	}
 
 	
