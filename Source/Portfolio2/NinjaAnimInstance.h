@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "CharacterType.h"
 #include "NinjaAnimInstance.generated.h"
 
 /**
@@ -37,5 +38,9 @@ public:
 
 	bool bIsInAir;
 
+
+	UPROPERTY(BlueprintReadWrite, Category = "NinjaAnim")
+
+	ECharacterState CharacterState;
 	
 };

@@ -4,7 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "CharacterType.h"
 #include "Ninja.generated.h"
+
+
+
+
+
+
 
 
 UCLASS()
@@ -16,11 +23,16 @@ public:
 	// Sets default values for this character's properties
 	ANinja();
 
+	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
+	
+
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

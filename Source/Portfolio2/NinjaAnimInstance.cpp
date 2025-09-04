@@ -35,6 +35,8 @@ void UNinjaAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		bIsInAir = Movement->IsFalling();	
 
+		CharacterState = Ninja->CharacterState;
+
 
 
 	}

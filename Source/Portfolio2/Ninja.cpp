@@ -9,6 +9,8 @@
 
 
 
+
+
 // Sets default values
 ANinja::ANinja()
 {
@@ -125,6 +127,8 @@ void ANinja::PickupEquipItem() {
 		if (MyWeapon) {
        
 			MyWeapon->Equip(this, FName("RightHandSocket"));
+
+			CharacterState = ECharacterState::ECS_EquippedOneHanded;
 
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("Weapon Equipped"));
