@@ -54,7 +54,20 @@ public:
 	void MoveRight(float Value);
 	void PickupEquipItem();
 	void SetEquippedWeapon(class AItem* ItemToSet);
+	void Attack();
+
+	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ITemWeapon")
 	class AItem* Weapon;
+
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	UAnimMontage* CombatMontage;
+
+	
+
+	
+
 };

@@ -11,6 +11,7 @@
 
 
 
+
 // Sets default values
 ANinja::ANinja()
 {
@@ -56,6 +57,7 @@ void ANinja::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
 	
 	PlayerInputComponent->BindAction(TEXT("Equip"), IE_Released, this, &ANinja::PickupEquipItem);
+	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &ANinja::Attack);
 
 }
 
@@ -150,3 +152,53 @@ void ANinja::SetEquippedWeapon(AItem* ItemToSet)
 {
 	Weapon = ItemToSet;
 }
+
+
+
+void ANinja::Attack() {
+
+
+	if (CombatMontage)
+	{
+
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		if (AnimInstance)
+		{
+
+			AnimInstance->Montage_Play(CombatMontage, 1.f);
+
+			int32 switch_on = FMath::RandRange(0, 1);
+
+			FName SectionName;
+
+			switch (switch_on)
+			{
+			case 0:
+				SectionName = FName("Attack1");
+				break;
+			case 1:	
+				SectionName = FName("Attack2");
+				break;
+			default:
+				break;
+			}
+	
+
+			AnimInstance-> Montage_JumpToSection(SectionName, CombatMontage);
+
+
+			}
+
+
+
+		}
+
+
+
+
+	}
+
+
+
+		
