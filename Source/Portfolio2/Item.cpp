@@ -50,12 +50,35 @@ void AItem::BeginPlay()
 	
 }
 
+float AItem::TransformSin(float value)
+{
+    return Amplitude * FMath::Sin(value * timeConstant);
+}
+
+
+
 // Called every frame
 void AItem::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
+
+
+    if (ItemState == EItemState::EIS_Hover) {
+      RunningTime += DeltaTime;
+
+
+    float DeltaZ =  Amplitude * FMath::Sin(RunningTime * timeConstant);
+
+    AddActorLocalOffset(FVector(0,0,DeltaZ));
+	}
+    
+    
+
+
+
 
 }
+
 
 
 

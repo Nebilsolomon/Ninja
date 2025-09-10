@@ -65,7 +65,7 @@ void ANinja::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ANinja::MoveForward(float Value){
 
 
-	if (Controller, Value != 0)
+	if (Controller, Value != 0, ActionState == EActionState::EAS_Unoccupied)
 	{
 
 
@@ -88,7 +88,7 @@ void ANinja::MoveForward(float Value){
 
 
 void ANinja::MoveRight(float Value){
-	if (Controller && Value != 0)
+	if (Controller && Value != 0 && ActionState == EActionState::EAS_Unoccupied)
 	{
 
 
@@ -127,6 +127,10 @@ void ANinja::PickupEquipItem() {
 		
 
 		if (MyWeapon) {
+
+
+
+			MyWeapon->ItemState = EItemState::EIS_Equipped;
        
 			MyWeapon->Equip(this, FName("RightHandSocket"));
 

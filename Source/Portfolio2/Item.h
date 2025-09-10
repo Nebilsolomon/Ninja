@@ -6,6 +6,20 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+
+
+
+
+enum class EItemState : uint8
+{
+	EIS_Hover		UMETA(DisplayName = "Hover"),
+	EIS_Equipped	UMETA(DisplayName = "Equipped"),
+	EIS_MAX			UMETA(DisplayName = "DefaultMAX")
+};
+
+
+
+
 UCLASS()
 class PORTFOLIO2_API AItem : public AActor
 {
@@ -22,6 +36,35 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	EItemState ItemState = EItemState::EIS_Hover;
+
+
+
+
+
+
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "gok")
+	float RunningTime;
+
+
+
+
+
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "gok")
+	float Amplitude = 0.25f;
+
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "gok")
+	float timeConstant = 5.f;
+
+
+	UFUNCTION(BlueprintCallable)
+	float TransformSin(float value);
+
+
+
+
+
 
  
 	
