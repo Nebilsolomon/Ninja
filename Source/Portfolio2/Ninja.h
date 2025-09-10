@@ -33,6 +33,9 @@ public:
 	
 
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ActionState")
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -54,8 +57,13 @@ public:
 	void MoveRight(float Value);
 	void PickupEquipItem();
 	void SetEquippedWeapon(class AItem* ItemToSet);
+	
+	
 	void Attack();
+   void PlayAttackMontage();
 
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
 	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ITemWeapon")
@@ -63,6 +71,8 @@ public:
 
 
 	
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UAnimMontage* CombatMontage;
 
