@@ -59,8 +59,14 @@ public:
 	void SetEquippedWeapon(class AItem* ItemToSet);
 	
 	
-	void Attack();
+   void Attack();
    void PlayAttackMontage();
+
+   void PlayEquipMontage(FName SectionName);
+
+   bool CanArm();
+   bool CanDisarm();
+
 
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
@@ -69,12 +75,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ITemWeapon")
 	class AItem* Weapon;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipped")
+	class AItem* EquipWeapon;
+
 
 	
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UAnimMontage* CombatMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipped")
+	UAnimMontage* equipMontage;
 
 	
 

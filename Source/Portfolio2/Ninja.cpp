@@ -122,34 +122,60 @@ void ANinja::PickupEquipItem() {
 
 	if (Weapon) {
 
+
 		AWeapon* MyWeapon = Cast<AWeapon>(Weapon);
 
-		
 
-		if (MyWeapon) {
+		MyWeapon->ItemState = EItemState::EIS_Equipped;
+
+		MyWeapon->Equip(this, FName("RightHandSocket"));
+
+		CharacterState = ECharacterState::ECS_EquippedOneHanded;
+
+		EquipWeapon = MyWeapon;
+
+		Weapon = nullptr;
 
 
 
-			MyWeapon->ItemState = EItemState::EIS_Equipped;
-       
-			MyWeapon->Equip(this, FName("RightHandSocket"));
-
-			CharacterState = ECharacterState::ECS_EquippedOneHanded;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("Weapon Equipped"));
 
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("Weapon Equipped"));
+	}
+
+	else {
+
+
+		if (CanDisarm()) {
+
+
+
+			PlayEquipMontage(FName("unequip"));
+			CharacterState = ECharacterState::ECS_Unequipped;
+			//EquipWeapon = nullptr;
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("Weapon Unequipped"));
+
+
 
 
 		}
+		else if (CanArm()) {
 
-		
+			PlayEquipMontage(FName("equip"));
+			CharacterState = ECharacterState::ECS_EquippedOneHanded;
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Weapon Equipped"));
+
+		}
+
+
+
+
+
+
 	}
 
-
-
 }
-
-
 
 void ANinja::SetEquippedWeapon(AItem* ItemToSet)
 
@@ -175,6 +201,17 @@ void ANinja::Attack() {
 
 
 
+void ANinja::PlayEquipMontage(FName SectionName) {
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && equipMontage) {
+		AnimInstance->Montage_Play(equipMontage, 1.f);
+		AnimInstance->Montage_JumpToSection(SectionName, equipMontage);
+
+
+
+	}
+}
+
 void ANinja::PlayAttackMontage() {
 
 
@@ -187,7 +224,7 @@ void ANinja::PlayAttackMontage() {
 		AnimInstance->Montage_Play(CombatMontage, 1.f);
 
 
-		FName nameSection; 
+		FName nameSection;
 		int32 SectionNumber = FMath::RandRange(1, 2);
 
 		switch (SectionNumber) {
@@ -231,3 +268,15 @@ void ANinja::AttackEnd() {
 
 }
 
+
+
+
+
+bool ANinja::CanArm() {
+	return ActionState == EActionState::EAS_Unoccupied && CharacterState == ECharacterState::ECS_Unequipped && EquipWeapon;
+}
+
+
+bool ANinja::CanDisarm() {
+	return ActionState == EActionState::EAS_Unoccupied && CharacterState == ECharacterState::ECS_EquippedOneHanded;
+}
