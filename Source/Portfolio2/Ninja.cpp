@@ -117,6 +117,27 @@ void ANinja::LookUp(float Value){
 
 
 
+void ANinja::AttachSwordToHand() {
+	if (EquipWeapon)
+	{
+	FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget, true);
+	EquipWeapon->AttachToComponent(GetMesh(), AttachRules, FName("RightHandSocket"));
+	}
+	
+}
+void ANinja::AttachSwordToBack() {
+
+	if (EquipWeapon)
+	{
+    FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget, true);
+	EquipWeapon->AttachToComponent(GetMesh(), AttachRules, FName("SpineSword"));
+
+	}
+	
+}
+
+
+
 void ANinja::PickupEquipItem() {
 
 
