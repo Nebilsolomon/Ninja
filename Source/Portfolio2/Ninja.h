@@ -77,6 +77,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void AttachSwordToHand();
+
+
+	UFUNCTION(BlueprintCallable)
+	void EndEquip();
+
 	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ITemWeapon")

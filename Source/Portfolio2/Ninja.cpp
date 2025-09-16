@@ -173,7 +173,10 @@ void ANinja::PickupEquipItem() {
 
 			PlayEquipMontage(FName("unequip"));
 			CharacterState = ECharacterState::ECS_Unequipped;
-			//EquipWeapon = nullptr;
+		
+			//EquipWeapon = nullptr;'
+
+			ActionState = EActionState::EAS_Equipping;
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("Weapon Unequipped"));
 
 
@@ -184,6 +187,7 @@ void ANinja::PickupEquipItem() {
 
 			PlayEquipMontage(FName("equip"));
 			CharacterState = ECharacterState::ECS_EquippedOneHanded;
+			ActionState = EActionState::EAS_Equipping;
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Weapon Equipped"));
 
@@ -300,4 +304,15 @@ bool ANinja::CanArm() {
 
 bool ANinja::CanDisarm() {
 	return ActionState == EActionState::EAS_Unoccupied && CharacterState == ECharacterState::ECS_EquippedOneHanded;
+}
+
+
+
+void ANinja::EndEquip() {
+	
+
+	ActionState = EActionState::EAS_Unoccupied;
+
+
+
 }
