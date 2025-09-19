@@ -4,9 +4,19 @@
 #include "Weapon.h"
 #include "Ninja.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
 
 
+
+AWeapon::AWeapon() {
+	WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponBox"));
+	WeaponBox->SetupAttachment(GetRootComponent());
+
+
+}
 
 
 
@@ -50,7 +60,20 @@ void AWeapon::Equip(class ANinja* Char, FName SocketName) {
 		FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget, true);
 		ItemMesh->AttachToComponent(Char->GetMesh(), AttachRules, SocketName);
 
-		
+
+
+		if (EquipSound)
+		{
+		UGameplayStatics::PlaySoundAtLocation(this, EquipSound, GetActorLocation());
+
+		}
+
+
+		if (Sphere)
+		{
+
+			Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}
 
 
 

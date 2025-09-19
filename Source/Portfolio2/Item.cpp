@@ -105,4 +105,15 @@ void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAct
 }
 void AItem::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex){
 	UE_LOG(LogTemp, Warning, TEXT("OnOverlapEnd"));
+
+    ANinja* Ninja = Cast<ANinja>(OtherActor);
+    if (Ninja) {
+
+        Ninja->SetEquippedWeapon(nullptr);
+
+
+
+
+
+    }
 }

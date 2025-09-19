@@ -159,7 +159,7 @@ void ANinja::PickupEquipItem() {
 
 
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("Weapon Equipped"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("1"));
 
 
 	}
@@ -177,8 +177,8 @@ void ANinja::PickupEquipItem() {
 			//EquipWeapon = nullptr;'
 
 			ActionState = EActionState::EAS_Equipping;
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("Weapon Unequipped"));
 
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("2"));
 
 
 
@@ -189,7 +189,7 @@ void ANinja::PickupEquipItem() {
 			CharacterState = ECharacterState::ECS_EquippedOneHanded;
 			ActionState = EActionState::EAS_Equipping;
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Weapon Equipped"));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("3"));
 
 		}
 
@@ -255,10 +255,10 @@ void ANinja::PlayAttackMontage() {
 		switch (SectionNumber) {
 
 		case 1:
-			nameSection = FName("Attack1");
+			nameSection = FName("Attack3");
 			break;
 		case 2:
-			nameSection = FName("Attack2");
+			nameSection = FName("Attack3");
 			break;
 
 		default:
