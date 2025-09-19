@@ -26,6 +26,11 @@ public:
 
 	virtual void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
+	UFUNCTION()
+
+	virtual void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
 
 	class USoundBase* EquipSound;
@@ -33,6 +38,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
 
 	class UBoxComponent* WeaponBox;
+
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Trace1")
+	USceneComponent* StartTraceBox;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Trace2")
+	USceneComponent* EndTraceBox;
 
 	
 };
