@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Weapon.h"
+#include "Components/BoxComponent.h"
 
 
 
@@ -145,7 +146,7 @@ void ANinja::PickupEquipItem() {
 
 
 		AWeapon* MyWeapon = Cast<AWeapon>(Weapon);
-
+		
 
 		MyWeapon->ItemState = EItemState::EIS_Equipped;
 
@@ -240,8 +241,21 @@ void ANinja::PlayEquipMontage(FName SectionName) {
 void ANinja::PlayAttackMontage() {
 
 
+	/*
+
+
+
+
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+
+	if (AnimInstance->Montage_IsPlaying(CombatMontage)) {
+		UE_LOG(LogTemp, Warning, TEXT("Montage is actively playing"));
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Montage is actively playing"));
+	}
+
 
 	if (CombatMontage && AnimInstance) {
 
@@ -255,10 +269,10 @@ void ANinja::PlayAttackMontage() {
 		switch (SectionNumber) {
 
 		case 1:
-			nameSection = FName("Attack3");
+			nameSection = FName("Attack1");
 			break;
 		case 2:
-			nameSection = FName("Attack3");
+			nameSection = FName("Attack2");
 			break;
 
 		default:
@@ -281,8 +295,34 @@ void ANinja::PlayAttackMontage() {
 
 
 
-}
 
+
+
+
+
+	*/
+
+
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && nebil) {
+		AnimInstance->Montage_Play(nebil, 1.f);
+		FName nameSection;
+		int32 SectionNumber = FMath::RandRange(1, 2);
+		switch (SectionNumber) {
+		case 1:
+			nameSection = FName("Attack1");
+			break;
+		case 2:
+			nameSection = FName("Attack2");
+			break;
+		default:
+			break;
+		}
+		AnimInstance->Montage_JumpToSection(nameSection, nebil);
+
+	}
+}
 		
 
 
@@ -291,6 +331,7 @@ void ANinja::AttackEnd() {
 
 		ActionState = EActionState::EAS_Unoccupied;
 
+	
 }
 
 
@@ -313,6 +354,39 @@ void ANinja::EndEquip() {
 
 	ActionState = EActionState::EAS_Unoccupied;
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("End Equip Function Called"));
+
 
 
 }
+
+
+
+
+
+void ANinja::StartCollisonn() {
+	if (EquipWeapon->WeaponBox) {
+		EquipWeapon->WeaponBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Collision Enabled"));
+	}
+}
+
+void ANinja::FinishCollisionn()
+{
+
+	if (EquipWeapon->WeaponBox) {
+		EquipWeapon->WeaponBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Collision Disabled"));
+	}
+}
+
+
+
+
+
+
+
+
+

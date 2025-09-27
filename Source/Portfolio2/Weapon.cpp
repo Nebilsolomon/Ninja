@@ -13,11 +13,39 @@
 
 
 AWeapon::AWeapon() {
-	WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponBox"));
-	WeaponBox->SetupAttachment(GetRootComponent());
-	WeaponBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	WeaponBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+
+
+
+
+
+
+
+
+
+
+
+
+WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponBox"));
+	//WeaponBox->SetupAttachment(ItemMesh);
+
+	WeaponBox->SetupAttachment(ItemMesh, TEXT("SwordSocket"));
+
+
+	WeaponBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	WeaponBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	WeaponBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+
+
+
+
+
+
+
+	
+
+	//WeaponBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	//WeaponBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	//WeaponBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 
 
 	StartTraceBox = CreateDefaultSubobject<USceneComponent>(TEXT("StartTraceBox"));
@@ -37,7 +65,7 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	WeaponBox->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnBoxOverlapBegin);
+	WeaponBox->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::x);
 
 }
 
@@ -65,12 +93,17 @@ void AWeapon::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherAct
 
 
 
-void AWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+void AWeapon::x(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 
 
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("nebil gokdemirrr"));
 	const FVector Start = StartTraceBox->GetComponentLocation();
 	const FVector End = EndTraceBox->GetComponentLocation();
 	 DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2.f);
+
+	 DrawDebugSphere(GetWorld(), Start, 5.f, 12, FColor::Green, false, 2.f);
+
 
 
 
@@ -93,6 +126,8 @@ void AWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 
 
 	 );
+
+
 
 
 

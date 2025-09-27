@@ -82,13 +82,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EndEquip();
 
+
+
+	UFUNCTION(BlueprintCallable, Category = "Collision")
+	void StartCollisonn();
+
+
+	UFUNCTION(BlueprintCallable, Category = "Collision")
+	void FinishCollisionn();
 	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ITemWeapon")
 	class AItem* Weapon;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipped")
-	class AItem* EquipWeapon;
+	class AWeapon* EquipWeapon;
 
 
 	
@@ -96,6 +104,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UAnimMontage* CombatMontage;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	UAnimMontage* nebil;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipped")
 	UAnimMontage* equipMontage;
