@@ -10,6 +10,8 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+#include "HitInterface.h"
+
 
 
 
@@ -31,11 +33,19 @@ WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponBox"));
 
 	WeaponBox->SetupAttachment(ItemMesh, TEXT("SwordSocket"));
 
-
+	
 	WeaponBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	WeaponBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	WeaponBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+/*
 
+		WeaponBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	WeaponBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+	WeaponBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+
+
+	*/
+	
 
 
 
@@ -94,6 +104,28 @@ void AWeapon::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherAct
 
 
 
+
+void AWeapon::x(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("OtherActor Class: %s"), *OtherActor->GetClass()->GetName()));
+
+	AEnemy* Enemy = Cast<AEnemy>(OtherActor);
+	if (Enemy) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Hit an enemy"));
+
+		Enemy->GetHit(SweepResult.ImpactPoint);
+		// Handle enemy hit logic here
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OtherActor is not an enemy"));
+	}
+}
+
+/*
+
+
+
+
+
 void AWeapon::x(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 
 
@@ -101,41 +133,53 @@ void AWeapon::x(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimit
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("nebil gokdemirrr"));
 	const FVector Start = StartTraceBox->GetComponentLocation();
 	const FVector End = EndTraceBox->GetComponentLocation();
-	 DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2.f);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2.f);
 
-	 DrawDebugSphere(GetWorld(), Start, 5.f, 12, FColor::Green, false, 2.f);
-
-
-
-
-	 TArray<AActor*> ActorToIgnore;
-	 ActorToIgnore.Add(this);
-	 FHitResult BoxHit;
-	 UKismetSystemLibrary::BoxTraceSingle(
-		 this,
-		 Start,
-		 End,
-		 FVector(5, 5, 5),
-		 StartTraceBox->GetComponentRotation(),
-		 ETraceTypeQuery::TraceTypeQuery1,
-		 false,
-		 ActorToIgnore,
-		 EDrawDebugTrace::ForDuration,
-		 BoxHit,
-		 true
+	DrawDebugSphere(GetWorld(), Start, 5.f, 12, FColor::Green, false, 2.f);
 
 
 
-	 );
+
+	TArray<AActor*> ActorToIgnore;
+	ActorToIgnore.Add(this);
+	FHitResult BoxHit;
+	UKismetSystemLibrary::BoxTraceSingle(
+		this,
+		Start,
+		End,
+		FVector(5, 5, 5),
+		StartTraceBox->GetComponentRotation(),
+		ETraceTypeQuery::TraceTypeQuery1,
+		false,
+		ActorToIgnore,
+		EDrawDebugTrace::ForDuration,
+		BoxHit,
+		true
 
 
-	 GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Hit Actor: %s"), *GetNameSafe(BoxHit.GetActor())));
+
+	);
+
+
+
+
+	AEnemy* Enemy = Cast<AEnemy>(BoxHit.GetActor());
+	if (Enemy) {
+		// If the hit actor is an enemy, apply damage or effects here
+		
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Hit Actor: %s"), *BoxHit.GetActor()->GetName()));
+
+		
+
+	}
 	
-	
-
 
 
 }
+
+
+*/
+
 void AWeapon::Equip(class ANinja* Char, FName SocketName) {
 	if (Char) {
 		// Attach the weapon to the character's hand

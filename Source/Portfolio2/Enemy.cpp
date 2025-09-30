@@ -53,10 +53,13 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 {
 
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ohh fuck i got it!"));
+
+
     DrawDebugSphere(
-        GetWorld(),       // World
+      GetWorld(),       // World
         ImpactPoint,      // Center of the sphere
-        50.0f,            // Radius
+        200,            // Radius
         12,               // Segments
         FColor::Red,      // Color
         false,            // Persistent (disappears)
@@ -64,6 +67,9 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
         0,                // DepthPriority
         2.0f              // Thickness
     );
+
+	
+
 }
 
 
