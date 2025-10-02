@@ -68,17 +68,18 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
         2.0f              // Thickness
     );
 
-	PlayEnemyMontage();
+	PlayEnemyMontage(FName("Front"));
 	
 
 }
 
-void AEnemy::PlayEnemyMontage()
+void AEnemy::PlayEnemyMontage(FName name)
 {
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && EnemyMontage) {
 		AnimInstance->Montage_Play(EnemyMontage, 1.f);
+		AnimInstance->Montage_JumpToSection(name, EnemyMontage);
 	}
 
 }

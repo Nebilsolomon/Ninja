@@ -31,7 +31,7 @@ public:
 	virtual void GetHit(const FVector& ImpactPoint) override;
 
 
-	void PlayEnemyMontage();
+	void PlayEnemyMontage(FName name);
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Montage")
