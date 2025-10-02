@@ -30,4 +30,13 @@ public:
 	
 	virtual void GetHit(const FVector& ImpactPoint) override;
 
+
+	void PlayEnemyMontage();
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Montage")
+	UAnimMontage* EnemyMontage;
+
+
+
 };

@@ -109,7 +109,10 @@ void AWeapon::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherAct
 
 
 void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("WeaponBox overlapped with actor"));
+
+/*
+
+GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("WeaponBox overlapped with actor"));
 
 	// First, check if OtherActor is an enemy (optional fallback)
 	if (OtherActor != nullptr && OtherActor != this) {
@@ -120,6 +123,10 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 			// Enemy->GetHit(SweepResult.ImpactPoint.IsZero() ? GetActorLocation() : SweepResult.ImpactPoint);
 		}
 	}
+
+*/
+
+	
 
 	// Perform box trace for precise hit detection
 	const FVector Start = StartTraceBox->GetComponentLocation();

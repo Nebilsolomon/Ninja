@@ -68,11 +68,20 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
         2.0f              // Thickness
     );
 
+	PlayEnemyMontage();
 	
 
 }
 
+void AEnemy::PlayEnemyMontage()
+{
 
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && EnemyMontage) {
+		AnimInstance->Montage_Play(EnemyMontage, 1.f);
+	}
+
+}
 
 
 
