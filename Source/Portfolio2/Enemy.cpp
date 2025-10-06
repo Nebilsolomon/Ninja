@@ -5,6 +5,9 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
+
+
 
 
 
@@ -89,10 +92,17 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	}
 
 
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,            // World context object
+			HitSound,        // USoundBase* (your sound asset)
+			ImpactPoint      // Location of the hit
+		);
+	}
 
 
-
-		
+   
 
 
 

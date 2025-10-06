@@ -38,5 +38,9 @@ public:
 	UAnimMontage* EnemyMontage;
 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundBase* HitSound;
+
+
 
 };
