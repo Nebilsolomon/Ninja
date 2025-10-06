@@ -52,26 +52,53 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
 
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ohh fuck i got it!"));
-
-
-    DrawDebugSphere(
-      GetWorld(),       // World
-        ImpactPoint,      // Center of the sphere
-        200,            // Radius
-        12,               // Segments
-        FColor::Red,      // Color
-        false,            // Persistent (disappears)
-        2.0f,             // LifeTime in seconds
-        0,                // DepthPriority
-        2.0f              // Thickness
-    );
-
-	PlayEnemyMontage(FName("Front"));
 	
 
-}
+	//PlayEnemyMontage(FName("Front"));
+
+
+
+	FVector forward = GetActorForwardVector(); 
+
+	FVector ToHit = (ImpactPoint - GetActorLocation()).GetSafeNormal();
+
+	double CosTheta =	FVector::DotProduct(forward, ToHit);
+
+	double Theta = FMath::Acos(CosTheta);
+
+	Theta = FMath::RadiansToDegrees(Theta);
+
+	FVector CrossProduct = FVector::CrossProduct(forward, ToHit);
+
+	if(CrossProduct.Z < 0) {
+		Theta = -Theta;
+	}
+
+
+	if (Theta >= -45 && Theta < 45) {
+		PlayEnemyMontage(FName("Front"));
+	}
+	else if (Theta >= 45 && Theta < 135) {
+		PlayEnemyMontage(FName("Right"));
+	}
+	else if (Theta >= -135 && Theta < -45) {
+		PlayEnemyMontage(FName("Left"));
+	}
+	else {
+		PlayEnemyMontage(FName("Back"));
+	}
+
+
+
+
+
+		
+
+
+
+
+		
+	}
 
 void AEnemy::PlayEnemyMontage(FName name)
 {
