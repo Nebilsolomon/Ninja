@@ -41,6 +41,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundBase* HitSound;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Particles")
+
+	UParticleSystem* HitParticles;
+
 
 
 };

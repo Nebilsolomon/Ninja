@@ -11,6 +11,7 @@
 
 
 
+
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -92,6 +93,8 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	}
 
 
+
+
 	if (HitSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(
@@ -99,14 +102,29 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 			HitSound,        // USoundBase* (your sound asset)
 			ImpactPoint      // Location of the hit
 		);
+
+		if (HitParticles)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(
+				GetWorld(),
+				HitParticles,
+				ImpactPoint
+			);
+
+
+
+
+
+
+
+		}
+
+
+
+
+
+
 	}
-
-
-   
-
-
-
-
 		
 	}
 

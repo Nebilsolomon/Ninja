@@ -133,10 +133,10 @@ GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("WeaponBox overla
 	const FVector End = EndTraceBox->GetComponentLocation();
 
 	// Debug visualizations
-	DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 2.f, 0, 2.f);
+	//DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 2.f, 0, 2.f);
 	FVector TraceBoxSize(10, 10, 10); // Increased size
-	DrawDebugBox(GetWorld(), Start, TraceBoxSize, FColor::Red, false, 2.f);
-	DrawDebugBox(GetWorld(), End, TraceBoxSize, FColor::Green, false, 2.f);
+	/*DrawDebugBox(GetWorld(), Start, TraceBoxSize, FColor::Red, false, 2.f);
+	DrawDebugBox(GetWorld(), End, TraceBoxSize, FColor::Green, false, 2.f);*/
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Start: %s, End: %s"), *Start.ToString(), *End.ToString()));
 
 	TArray<AActor*> ActorsToIgnore;
@@ -152,7 +152,7 @@ GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("WeaponBox overla
 		UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_WorldDynamic),
 		false,
 		ActorsToIgnore,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		BoxHit,
 		true
 	);
