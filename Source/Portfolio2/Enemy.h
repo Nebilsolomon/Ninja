@@ -5,7 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "HitInterface.h"
+
+#include "NiagaraSystem.h"
 #include "Enemy.generated.h"
+
+
 
 UCLASS()
 class PORTFOLIO2_API AEnemy : public ACharacter, public IHitInterface
@@ -41,9 +45,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundBase* HitSound;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Particles")
 
-	UParticleSystem* HitParticles;
+	UPROPERTY(EditAnywhere , Category = "Niagara")
+	class UNiagaraSystem* BloodNiagara;
 
 
 

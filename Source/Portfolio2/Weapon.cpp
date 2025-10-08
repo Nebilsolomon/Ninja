@@ -110,21 +110,7 @@ void AWeapon::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherAct
 
 void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 
-/*
 
-GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("WeaponBox overlapped with actor"));
-
-	// First, check if OtherActor is an enemy (optional fallback)
-	if (OtherActor != nullptr && OtherActor != this) {
-		AEnemy* Enemy = Cast<AEnemy>(OtherActor);
-		if (Enemy) {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Overlapped with enemy directly"));
-			// Optional: Call GetHit directly if trace isn't critical
-			// Enemy->GetHit(SweepResult.ImpactPoint.IsZero() ? GetActorLocation() : SweepResult.ImpactPoint);
-		}
-	}
-
-*/
 
 	
 
@@ -137,7 +123,7 @@ GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("WeaponBox overla
 	FVector TraceBoxSize(10, 10, 10); // Increased size
 	/*DrawDebugBox(GetWorld(), Start, TraceBoxSize, FColor::Red, false, 2.f);
 	DrawDebugBox(GetWorld(), End, TraceBoxSize, FColor::Green, false, 2.f);*/
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Start: %s, End: %s"), *Start.ToString(), *End.ToString()));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Start: %s, End: %s"), *Start.ToString(), *End.ToString()));
 
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);

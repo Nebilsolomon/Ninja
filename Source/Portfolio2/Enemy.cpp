@@ -7,6 +7,10 @@
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraSystem.h"
+
+
 
 
 
@@ -103,17 +107,26 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 			ImpactPoint      // Location of the hit
 		);
 
-		if (HitParticles)
+
+	}
+		if (BloodNiagara)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(
-				GetWorld(),
-				HitParticles,
-				ImpactPoint
-			);
+
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "neden buraya girmiyor ki yaw ");
+
+		
+                if (BloodNiagara)
+                {
+                    FRotator NoRotation(0, 0, 0);
+                    // Correct the class name to match the actual class in the Niagara library
+                    UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), BloodNiagara, ImpactPoint, NoRotation);
+                }
+            
 
 
 
-
+		}
 
 
 
@@ -124,9 +137,7 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 
 
 
-	}
-		
-	}
+
 
 void AEnemy::PlayEnemyMontage(FName name)
 {
