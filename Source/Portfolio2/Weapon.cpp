@@ -1,5 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "GeometryCollection/GeometryCollectionActor.h"
+#include "GeometryCollection/GeometryCollectionComponent.h"
+
+
 
 #include "Weapon.h"
 #include "Ninja.h"
@@ -13,6 +17,7 @@
 #include "HitInterface.h"
 
 
+#include "GeometryCollection/GeometryCollectionComponent.h"
 
 
 AWeapon::AWeapon() {
@@ -112,7 +117,7 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 
 
-	
+
 
 	// Perform box trace for precise hit detection
 	const FVector Start = StartTraceBox->GetComponentLocation();
@@ -143,12 +148,24 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		true
 	);
 
+
+
+
+
+
+
+
 	AActor* HitActor = BoxHit.GetActor();
 	if (HitActor != nullptr) {
 		AEnemy* Enemy = Cast<AEnemy>(HitActor);
+
+
 		if (Enemy) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Hit an enemy via trace  nebil"));
 			Enemy->GetHit(BoxHit.ImpactPoint);
+			
+			
+			
 		}
 		else {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Hit actor is not an enemy"));
@@ -157,6 +174,9 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 	else {
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No actor hit by trace"));
 	}
+	CreateField(BoxHit.ImpactPoint);
+
+	
 }
 
 
@@ -169,66 +189,9 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 
 
-/*
 
 
 
-
-void AWeapon::x(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-	const FVector Start = StartTraceBox->GetComponentLocation();
-	const FVector End = EndTraceBox->GetComponentLocation();
-
-
-
-	DrawDebugBox(GetWorld(), Start, FVector(5, 5, 5), FColor::Red, false, 2.f);
-	DrawDebugBox(GetWorld(), End, FVector(5, 5, 5), FColor::Green, false, 2.f);
-
-
-	TArray<AActor*> ActorToIgnore;
-	ActorToIgnore.Add(this);
-	FHitResult BoxHit;
-	UKismetSystemLibrary::BoxTraceSingle(
-		this,
-		Start,
-		End,
-		FVector(5, 5, 5),
-		StartTraceBox->GetComponentRotation(),
-		ETraceTypeQuery::TraceTypeQuery1,
-		false,
-		ActorToIgnore,
-		EDrawDebugTrace::ForDuration,
-		BoxHit,
-		true
-	);
-
-	AActor* HitActor = BoxHit.GetActor();
-	if (HitActor != nullptr) {
-		AEnemy* Enemy = Cast<AEnemy>(HitActor);
-		if (Enemy) {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Hit an enemy"));
-
-			Enemy->GetHit(BoxHit.ImpactPoint);
-		}
-		else {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Hit actor is not an enemy"));
-		}
-	}
-	else {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No actor hit"));
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-*/
 
 
 

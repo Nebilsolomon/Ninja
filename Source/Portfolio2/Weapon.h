@@ -46,5 +46,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Trace2")
 	USceneComponent* EndTraceBox;
 
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void CreateField(const FVector & FieldLocation);
+
 	
 };
