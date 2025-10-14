@@ -1,8 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GeometryCollection/GeometryCollectionActor.h"
-#include "GeometryCollection/GeometryCollectionComponent.h"
-
 
 
 #include "Weapon.h"
@@ -148,24 +145,43 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		true
 	);
 
+	if (BoxHit.GetActor())
+	{
+
+		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
+
+		if (HitInterface)
+		{
+			HitInterface->GetHit(BoxHit.ImpactPoint);
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Hit an actor via trace"));
+
+		}
+
+		CreateField(BoxHit.ImpactPoint);
+
+	}
 
 
+	
 
-
-
-
-
+	/*
+	
 	AActor* HitActor = BoxHit.GetActor();
 	if (HitActor != nullptr) {
+
+
+		CreateField(BoxHit.ImpactPoint);
+
 		AEnemy* Enemy = Cast<AEnemy>(HitActor);
 
 
 		if (Enemy) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Hit an enemy via trace  nebil"));
 			Enemy->GetHit(BoxHit.ImpactPoint);
-			
-			
-			
+
+
+
 		}
 		else {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Hit actor is not an enemy"));
@@ -175,8 +191,9 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No actor hit by trace"));
 	}
 	CreateField(BoxHit.ImpactPoint);
-
 	
+	
+	*/
 }
 
 
