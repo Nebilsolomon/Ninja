@@ -152,7 +152,9 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 		if (HitInterface)
 		{
-			HitInterface->GetHit(BoxHit.ImpactPoint);
+		//	HitInterface->GetHit(BoxHit.ImpactPoint);
+
+			HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Hit an actor via trace"));
 
