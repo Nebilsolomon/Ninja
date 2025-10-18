@@ -2,6 +2,7 @@
 
 #include "BreakableActor.h"
 #include "GeometryCollection/GeometryCollectionComponent.h"
+#include "Treasure.h"
 
 // Sets default values
 
@@ -19,6 +20,8 @@ ABreakableActor::ABreakableActor()
 	SetRootComponent(GeometryCollection);
 
 	GeometryCollection->SetGenerateOverlapEvents(true);
+
+	GeometryCollection->SetCollisionResponseToChannel( ECC_Pawn, ECR_Ignore);
 
 	
 
@@ -47,6 +50,20 @@ void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)
 {
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, "Breakable actor hit");
+
+	UWorld* World = GetWorld();
+	if (World && TreasureSubclasses.Num() > 0) {
+		//World->SpawnActor<AActor>(AActor::StaticClass(), ImpactPoint, FRotator::ZeroRotator);
+
+
+		FVector Location = GetActorLocation();
+		Location.Z += 50.f;
+
+		const int32 RandIndex = FMath::RandRange(0, TreasureSubclasses.Num() - 1);
+
+		World->SpawnActor<ATreasure>(TreasureSubclasses[RandIndex], Location, GetActorRotation());
+		SetLifeSpan(3.0f);
+	}
 }
 
 

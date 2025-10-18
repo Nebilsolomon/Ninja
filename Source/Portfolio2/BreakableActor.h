@@ -32,6 +32,16 @@ public:
 
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnTreasure")	
+	//UClass* TreasureClass;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Treasure")
+	TArray<TSubclassOf<class ATreasure>> TreasureSubclasses;
+
+	
+	//TSubclassOf<class ATreasure> TreasureSubclass;
+
 
 
 };
