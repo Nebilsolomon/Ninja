@@ -41,6 +41,8 @@ public:
 
 	
 	//TSubclassOf<class ATreasure> TreasureSubclass;
+	bool bHasBeenHit = false;
+
 
 
 

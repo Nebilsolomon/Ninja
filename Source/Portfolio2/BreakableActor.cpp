@@ -49,6 +49,9 @@ void ABreakableActor::Tick(float DeltaTime)
 void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)
 {
 
+	if (bHasBeenHit) return; // ignore repeated hits
+	bHasBeenHit = true;
+
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, "Breakable actor hit");
 
 	UWorld* World = GetWorld();
