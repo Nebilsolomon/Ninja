@@ -16,6 +16,8 @@
 
 #include "GeometryCollection/GeometryCollectionComponent.h"
 
+#include "NiagaraComponent.h"
+
 
 AWeapon::AWeapon() {
 
@@ -240,6 +242,9 @@ void AWeapon::Equip(class ANinja* Char, FName SocketName) {
 
 
 	}
+
+	NiagaraComponent->Deactivate();
+
 }
 
 

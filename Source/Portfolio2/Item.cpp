@@ -6,6 +6,9 @@
 #include "Ninja.h"
 #include "GameFramework/CharacterMovementComponent.h" // <-- IMPORTANT include
 
+#include "NiagaraComponent.h"
+
+
 
 
 // Sets default values
@@ -33,7 +36,11 @@ AItem::AItem()
     Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
     Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
     Sphere->SetGenerateOverlapEvents(true);
+
+	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
+	NiagaraComponent->SetupAttachment(GetRootComponent());
 }
+
 
 
 

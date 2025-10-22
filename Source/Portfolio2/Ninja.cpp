@@ -196,6 +196,7 @@ void ANinja::PickupEquipItem() {
 
 
 
+		//NiagaraComponent->Deactivate();
 
 
 

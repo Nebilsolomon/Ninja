@@ -39,6 +39,10 @@ public:
 
 	EItemState ItemState = EItemState::EIS_Hover;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Niagara")
+
+	class UNiagaraComponent* NiagaraComponent;	
+
 
 
 
