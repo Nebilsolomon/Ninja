@@ -34,6 +34,8 @@ public:
 	
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
 
 	void PlayEnemyMontage(FName name);
 
@@ -48,6 +50,18 @@ public:
 
 	UPROPERTY(EditAnywhere , Category = "Niagara")
 	class UNiagaraSystem* BloodNiagara;
+
+
+	UPROPERTY(EditAnywhere, Category = "HealthAttribute")
+
+
+	class UAttributeComponent* AttributeHealth;
+	
+	UPROPERTY(EditAnywhere, Category = "HealthBar")
+
+	class UHealthBarComponent* HealthBar;
+
+	
 
 
 

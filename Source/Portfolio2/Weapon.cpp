@@ -164,6 +164,30 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 		CreateField(BoxHit.ImpactPoint);
 
+
+		if(GetInstigator()) {
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("Hit actor does not implement HitInterface gokdemir "));
+
+UGameplayStatics::ApplyDamage(
+			BoxHit.GetActor(),
+			DamageAmount,
+           	
+		   GetInstigator()->GetController(),
+			this,
+			UDamageType::StaticClass()
+		);}
+		else {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Hit actor does not implement HitInterface nebil "));
+		}
+
+	
+
+
+
+		
+	
+	
 	}
 
 

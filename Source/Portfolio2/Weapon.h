@@ -50,5 +50,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void CreateField(const FVector & FieldLocation);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
+	float DamageAmount;
+
 	
 };

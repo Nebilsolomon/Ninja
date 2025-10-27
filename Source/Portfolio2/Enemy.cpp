@@ -9,9 +9,8 @@
 
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
-
-
-
+#include "AttributeComponent.h"
+#include "HealthBarComponent.h"
 
 
 
@@ -32,6 +31,10 @@ AEnemy::AEnemy()
 
 
 
+	AttributeHealth = CreateDefaultSubobject<UAttributeComponent>(TEXT("AttributeHealth"));
+	HealthBar = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
+	HealthBar->SetupAttachment(GetRootComponent());
+
 
 	
 }
@@ -40,6 +43,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+
 	
 }
 
@@ -124,22 +128,44 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
                 }
             
 
+				
+
+		}
+
+
+
+
+
+
+
+
+
 
 
 		}
 
+float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::Printf(TEXT("Enemy took damage: %f"), DamageAmount));
 
 
+	if (AttributeHealth)
+	{
+		AttributeHealth->ReceiveDamage(DamageAmount);
+	}
+	
+
+	if (HealthBar)
+	{
+		HealthBar->SetHealthPercent(AttributeHealth->GetHealthPercent());
 
 
+	}
 
 
-
-
-
-
-
-		}
+	return 0.0f;
+}
 
 
 

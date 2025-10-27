@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Weapon.h"
 #include "Components/BoxComponent.h"
+#include "Item.h"
 
 
 
@@ -208,6 +209,18 @@ void ANinja::SetEquippedWeapon(AItem* ItemToSet)
 
 {
 	Weapon = ItemToSet;
+
+
+	if (Weapon)
+	{
+		AWeapon* MyWeapon = Cast<AWeapon>(Weapon);
+		MyWeapon->SetOwner(this);
+		MyWeapon->SetInstigator(this);
+	
+	}
+
+
+	
 }
 
 
