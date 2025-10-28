@@ -43,6 +43,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	HealthBar->SetVisibility(false);
 
 	
 }
@@ -51,6 +52,22 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (CombatActor)
+	{
+
+		 double Distance = (CombatActor->GetActorLocation() - GetActorLocation()).Size();
+
+
+		 if (Distance > 500)
+		 {
+			 CombatActor = nullptr;
+			 HealthBar->SetVisibility(false);
+		 
+		 }
+
+
+	}
 
 }
 
@@ -63,6 +80,12 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
 {
+
+	if (HealthBar)
+	{
+	HealthBar->SetVisibility(true);
+
+	}
 
 	if (AttributeHealth->IsAlive())
 	{
@@ -160,6 +183,7 @@ void AEnemy::HitReact(const FVector& ImpactPoint)
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 
+
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::Printf(TEXT("Enemy took damage: %f"), DamageAmount));
 
 
@@ -175,6 +199,9 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 
 
 	}
+
+
+	CombatActor = EventInstigator->GetPawn();
 
 
 	return DamageAmount;
@@ -237,7 +264,8 @@ void AEnemy::Die()
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("Enemy Died"));
 
-
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SetLifeSpan(5.f);
 }
 
 

@@ -76,7 +76,8 @@ public:
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
 
 
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	AActor* CombatActor;
 	
 
 
