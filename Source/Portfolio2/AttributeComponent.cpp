@@ -43,6 +43,16 @@ void UAttributeComponent::ReceiveDamage(float DamageAmount)
 float UAttributeComponent::GetHealthPercent()
 {
 	return Health / MaxHealth;
+
+
+
+
+
 }
 
 
+	bool UAttributeComponent::IsAlive() {
+
+		return Health > 0.f;
+
+	}

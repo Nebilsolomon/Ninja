@@ -112,6 +112,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipped")
 	UAnimMontage* equipMontage;
 
+
 	
 
 	

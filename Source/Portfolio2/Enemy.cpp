@@ -64,41 +64,20 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
 {
 
-	
+	if (AttributeHealth->IsAlive())
+	{
+	HitReact(ImpactPoint);
+	}
+	else {
+
+		Die();
+
+	}
 
 	//PlayEnemyMontage(FName("Front"));
 
 
 
-	FVector forward = GetActorForwardVector(); 
-
-	FVector ToHit = (ImpactPoint - GetActorLocation()).GetSafeNormal();
-
-	double CosTheta =	FVector::DotProduct(forward, ToHit);
-
-	double Theta = FMath::Acos(CosTheta);
-
-	Theta = FMath::RadiansToDegrees(Theta);
-
-	FVector CrossProduct = FVector::CrossProduct(forward, ToHit);
-
-	if(CrossProduct.Z < 0) {
-		Theta = -Theta;
-	}
-
-
-	if (Theta >= -45 && Theta < 45) {
-		PlayEnemyMontage(FName("Front"));
-	}
-	else if (Theta >= 45 && Theta < 135) {
-		PlayEnemyMontage(FName("Right"));
-	}
-	else if (Theta >= -135 && Theta < -45) {
-		PlayEnemyMontage(FName("Left"));
-	}
-	else {
-		PlayEnemyMontage(FName("Back"));
-	}
 
 
 
@@ -144,6 +123,40 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
 
 		}
 
+void AEnemy::HitReact(const FVector& ImpactPoint)
+{
+
+	FVector forward = GetActorForwardVector();
+
+	FVector ToHit = (ImpactPoint - GetActorLocation()).GetSafeNormal();
+
+	double CosTheta = FVector::DotProduct(forward, ToHit);
+
+	double Theta = FMath::Acos(CosTheta);
+
+	Theta = FMath::RadiansToDegrees(Theta);
+
+	FVector CrossProduct = FVector::CrossProduct(forward, ToHit);
+
+	if (CrossProduct.Z < 0) {
+		Theta = -Theta;
+	}
+
+
+	if (Theta >= -45 && Theta < 45) {
+		PlayEnemyMontage(FName("Front"));
+	}
+	else if (Theta >= 45 && Theta < 135) {
+		PlayEnemyMontage(FName("Right"));
+	}
+	else if (Theta >= -135 && Theta < -45) {
+		PlayEnemyMontage(FName("Left"));
+	}
+	else {
+		PlayEnemyMontage(FName("Back"));
+	}
+}
+
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 
@@ -154,7 +167,7 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	{
 		AttributeHealth->ReceiveDamage(DamageAmount);
 	}
-	
+
 
 	if (HealthBar)
 	{
@@ -164,11 +177,9 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	}
 
 
-	return 0.0f;
+	return DamageAmount;
+
 }
-
-
-
 
 
 
@@ -182,6 +193,50 @@ void AEnemy::PlayEnemyMontage(FName name)
 		AnimInstance->Montage_Play(EnemyMontage, 1.f);
 		AnimInstance->Montage_JumpToSection(name, EnemyMontage);
 	}
+
+}
+
+void AEnemy::Die()
+{
+
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	FName name = FName();
+	int randomInt = FMath::RandRange(1, 3);
+
+	switch (randomInt)
+	{
+		case 1:
+		name = FName("Death1");
+		DeathPose = EDeathPose::EDP_Death1;
+
+		break;
+		case 2:
+			name = FName("Death2");
+			DeathPose = EDeathPose::EDP_Death2;
+
+			break;
+
+
+		case 3:
+			name = FName("Death3");
+			DeathPose = EDeathPose::EDP_Death3;
+			break;
+
+	default:
+		name = FName("Death1");
+		break;
+	}
+
+	if (AnimInstance && DeathMontage) {
+		AnimInstance->Montage_Play(DeathMontage, 1.f);
+		AnimInstance->Montage_JumpToSection(name, DeathMontage);
+	
+	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("Enemy Died"));
+
 
 }
 
