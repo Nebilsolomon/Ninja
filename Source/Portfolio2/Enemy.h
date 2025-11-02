@@ -78,6 +78,14 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	AActor* CombatActor;
+
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "movement")
+	class UCharacterMovementComponent* CharacterMovementNebil;
+
+	
+
+
 	
 
 

@@ -35,6 +35,9 @@ AEnemy::AEnemy()
 	HealthBar = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBar->SetupAttachment(GetRootComponent());
 
+	CharacterMovementNebil = GetCharacterMovement();
+
+
 
 	
 }
