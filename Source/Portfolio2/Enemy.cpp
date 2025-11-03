@@ -6,6 +6,16 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/CharacterMovementComponent.h"
+////////////////////////
+#include "AIController.h"
+#include "NavigationSystem.h"
+#include "Navigation/PathFollowingComponent.h"
+
+
+
+
+
 
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
@@ -35,7 +45,11 @@ AEnemy::AEnemy()
 	HealthBar = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBar->SetupAttachment(GetRootComponent());
 
-	CharacterMovementNebil = GetCharacterMovement();
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
 
 
 
@@ -45,10 +59,49 @@ AEnemy::AEnemy()
 // Called when the game starts or when spawned
 void AEnemy::BeginPlay()
 {
+
 	Super::BeginPlay();
 	HealthBar->SetVisibility(false);
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("AI Controller found and moving to Patrol Actor"));
+
+	EnemyController = Cast<AAIController>(GetController());
+	if (EnemyController && PatrolActor) {
 	
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("AI Controller found and moving to Patrol Actor"));
+		FAIMoveRequest MoveRequest;
+		MoveRequest.SetGoalActor(PatrolActor);
+		MoveRequest.SetAcceptanceRadius(5.f);
+		FNavPathSharedPtr NavPath;
+	
+	
+		EnemyController->MoveTo(MoveRequest, &NavPath);
+
+		
+
+		const TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();
+
+		//TArray<FNavPathSharedPtr> PathPoint = NavPath->GetPathPoints();
+
+		for (auto & Point : PathPoints)
+		{
+			const FVector & Location = Point.Location;
+		
+			DrawDebugSphere(
+				GetWorld(),
+				Location,
+				25.f,
+				12,
+				FColor::Green,
+				true,
+				15.f
+			);
+		
+		}
+	
+	}
+
 }
 
 // Called every frame

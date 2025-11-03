@@ -76,16 +76,21 @@ public:
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat")
 	AActor* CombatActor;
 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "movement")
-	class UCharacterMovementComponent* CharacterMovementNebil;
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Patrol")
+	AActor* PatrolActor;
 
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Patrol")
+
+	TArray<AActor*> PatrolPoints;
+
+
+	UPROPERTY()
+   class AAIController* EnemyController;
 	
-
-
 	
 
 

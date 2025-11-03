@@ -8,7 +8,7 @@ public class Portfolio2 : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Niagara","GeometryCollectionEngine" , "UMG"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Niagara","GeometryCollectionEngine" , "UMG", "AIModule", "NavigationSystem"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
