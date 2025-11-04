@@ -66,6 +66,9 @@ void AEnemy::BeginPlay()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("AI Controller found and moving to Patrol Actor"));
 
 	EnemyController = Cast<AAIController>(GetController());
+
+	
+	
 	if (EnemyController && PatrolActor) {
 	
 
@@ -74,6 +77,7 @@ void AEnemy::BeginPlay()
 		MoveRequest.SetGoalActor(PatrolActor);
 		MoveRequest.SetAcceptanceRadius(5.f);
 		FNavPathSharedPtr NavPath;
+		
 	
 	
 		EnemyController->MoveTo(MoveRequest, &NavPath);
@@ -100,7 +104,11 @@ void AEnemy::BeginPlay()
 		
 		}
 	
+	
 	}
+	
+	
+	
 
 }
 
@@ -109,13 +117,18 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+
+
+
+
+
 	if (CombatActor)
 	{
 
-		 double Distance = (CombatActor->GetActorLocation() - GetActorLocation()).Size();
+		// double Distance = (CombatActor->GetActorLocation() - GetActorLocation()).Size();
 
-
-		 if (Distance > 500)
+		 if (!InTheRange(CombatActor, 500.f))
 		 {
 			 CombatActor = nullptr;
 			 HealthBar->SetVisibility(false);
@@ -124,6 +137,36 @@ void AEnemy::Tick(float DeltaTime)
 
 
 	}
+
+	if (PatrolActor && EnemyController)
+	{		
+
+		if (InTheRange(PatrolActor, PatrolRadius)) {
+		
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Patrol Target Reached , Moving to New Patrol Point"));
+
+			int32 PatrolTarget = PatrolPoints.Num();
+
+			if (PatrolTarget > 0 )
+			{
+			int32 RandomIndex = FMath::RandRange(0, PatrolPoints.Num() - 1);
+
+			AActor* NewPatrolPoint = PatrolPoints[RandomIndex];
+
+			
+            PatrolActor = NewPatrolPoint;
+			FAIMoveRequest MoveRequest;
+			MoveRequest.SetGoalActor(PatrolActor);
+			MoveRequest.SetAcceptanceRadius(5.f);
+			EnemyController->MoveTo(MoveRequest);
+			
+			
+
+			}
+		
+		}
+	}
+
 
 }
 
@@ -322,6 +365,15 @@ void AEnemy::Die()
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetLifeSpan(5.f);
+}
+
+bool AEnemy::InTheRange(AActor* Target, double Radius)
+{
+
+	double Distance = (Target->GetActorLocation() - GetActorLocation()).Size();
+
+
+	return Distance <= Radius;
 }
 
 

@@ -92,7 +92,11 @@ public:
    class AAIController* EnemyController;
 	
 	
+   bool InTheRange(AActor* Target, double Radius);
 
+
+   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol")
+   double PatrolRadius = 100.f;
 
 
 };
