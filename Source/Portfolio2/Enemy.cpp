@@ -68,49 +68,16 @@ void AEnemy::BeginPlay()
 	EnemyController = Cast<AAIController>(GetController());
 
 	
+	MoveToTarget(PatrolActor);
 	
-	if (EnemyController && PatrolActor) {
-	
-
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("AI Controller found and moving to Patrol Actor"));
-		FAIMoveRequest MoveRequest;
-		MoveRequest.SetGoalActor(PatrolActor);
-		MoveRequest.SetAcceptanceRadius(5.f);
-		FNavPathSharedPtr NavPath;
-		
-	
-	
-		EnemyController->MoveTo(MoveRequest, &NavPath);
-
-		
-
-		const TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();
-
-		//TArray<FNavPathSharedPtr> PathPoint = NavPath->GetPathPoints();
-
-		for (auto & Point : PathPoints)
-		{
-			const FVector & Location = Point.Location;
-		
-			DrawDebugSphere(
-				GetWorld(),
-				Location,
-				25.f,
-				12,
-				FColor::Green,
-				true,
-				15.f
-			);
-		
-		}
-	
+	//GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, 18);
 	
 	}
 	
 	
 	
 
-}
+
 
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
@@ -143,13 +110,13 @@ void AEnemy::Tick(float DeltaTime)
 
 		if (InTheRange(PatrolActor, PatrolRadius)) {
 		
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Patrol Target Reached , Moving to New Patrol Point"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Patrol Target Reached , Moving to New Patrol Point"));
 
 			int32 PatrolTarget = PatrolPoints.Num();
 
 			if (PatrolTarget > 0 )
 			{
-			int32 RandomIndex = FMath::RandRange(0, PatrolPoints.Num() - 1);
+			int32 RandomIndex = FMath::RandRange(0, PatrolTarget - 1);
 
 			AActor* NewPatrolPoint = PatrolPoints[RandomIndex];
 
@@ -158,7 +125,9 @@ void AEnemy::Tick(float DeltaTime)
 			FAIMoveRequest MoveRequest;
 			MoveRequest.SetGoalActor(PatrolActor);
 			MoveRequest.SetAcceptanceRadius(5.f);
-			EnemyController->MoveTo(MoveRequest);
+			GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, 10);
+
+			//EnemyController->MoveTo(MoveRequest);
 			
 			
 
@@ -374,6 +343,25 @@ bool AEnemy::InTheRange(AActor* Target, double Radius)
 
 
 	return Distance <= Radius;
+}
+
+void AEnemy::PatrolTimerFinished()
+{
+	MoveToTarget(PatrolActor);
+}
+
+void AEnemy::MoveToTarget(AActor* Target)
+{
+
+
+	if (Target == nullptr || EnemyController == nullptr) return; 
+	
+//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("AI Controller found and moving to Patrol Actor"));
+	FAIMoveRequest MoveRequest;
+	MoveRequest.SetGoalActor(Target);
+	MoveRequest.SetAcceptanceRadius(5.f);
+	EnemyController->MoveTo(MoveRequest);
+
 }
 
 

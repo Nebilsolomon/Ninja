@@ -96,7 +96,14 @@ public:
 
 
    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol")
-   double PatrolRadius = 100.f;
+   double PatrolRadius = 100;
+
+
+   FTimerHandle PatrolTimer;
+   void PatrolTimerFinished();
+
+
+   void MoveToTarget(AActor* Target);
 
 
 };
