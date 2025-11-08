@@ -69,7 +69,6 @@ void AEnemy::BeginPlay()
 	
 	HealthBar->SetVisibility(false);
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("AI Controller found and moving to Patrol Actor"));
 
 	EnemyController = Cast<AAIController>(GetController());
 
@@ -104,6 +103,7 @@ void AEnemy::Tick(float DeltaTime)
 
 			CheckCombatTarget();
 		}
+	}
 		else {
 
 
@@ -139,7 +139,7 @@ void AEnemy::Tick(float DeltaTime)
 			}
 		}
 	}
-}
+
 
 
 
@@ -377,12 +377,19 @@ void AEnemy::OnPawnSeen(APawn* SeenPawn)
 
 		if (EnemyState == EEnemyState::EES_Chasing) return; 
 		
-		EnemyState = EEnemyState::EES_Chasing;
-		GetWorldTimerManager().ClearTimer(PatrolTimer);
+	    GetWorldTimerManager().ClearTimer(PatrolTimer);
 		GetCharacterMovement()->MaxWalkSpeed = 300;
 
 		CombatActor = SeenPawn;
+
+		if (EnemyState != EEnemyState::EES_Attacking )
+		{
+
+	    EnemyState = EEnemyState::EES_Chasing;
+		
 		MoveToTarget(CombatActor);
+
+		}
 
 
 	}
