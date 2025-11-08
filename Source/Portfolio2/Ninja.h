@@ -31,7 +31,6 @@ protected:
 
 public:	
 	
-
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ActionState")

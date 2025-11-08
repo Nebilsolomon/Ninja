@@ -34,7 +34,7 @@ void ANinja::BeginPlay()
 {
 	Super::BeginPlay();
 	
-
+	Tags.Add(FName("NinjaTag"));
 
 	
 }

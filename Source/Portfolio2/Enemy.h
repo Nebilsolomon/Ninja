@@ -27,6 +27,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -99,6 +102,8 @@ public:
    double PatrolRadius = 100;
 
 
+
+
    FTimerHandle PatrolTimer;
    void PatrolTimerFinished();
 
@@ -106,4 +111,17 @@ public:
    void MoveToTarget(AActor* Target);
 
 
+   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+   class UPawnSensingComponent* PawnSensingComp;
+   UFUNCTION()
+   void OnPawnSeen(APawn* SeenPawn);
+
+   UPROPERTY(EditAnywhere)
+   double CombatRadius = 500; 
+
+   UPROPERTY(EditAnywhere)
+   double AttackRadius = 150; 
+
+   void CheckCombatTarget();
 };
+
