@@ -107,38 +107,45 @@ void AEnemy::Tick(float DeltaTime)
 		else {
 
 
-			if (PatrolActor && EnemyController)
-			{
-
-				if (InTheRange(PatrolActor, PatrolRadius)) {
-
-					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Patrol Target Reached , Moving to New Patrol Point"));
-
-					int32 PatrolTarget = PatrolPoints.Num();
-
-					if (PatrolTarget > 0)
-					{
-						int32 RandomIndex = FMath::RandRange(0, PatrolTarget - 1);
-
-						AActor* NewPatrolPoint = PatrolPoints[RandomIndex];
-
-
-						PatrolActor = NewPatrolPoint;
-						//FAIMoveRequest MoveRequest;
-						//MoveRequest.SetGoalActor(PatrolActor);
-						//MoveRequest.SetAcceptanceRadius(5.f);
-						GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, 10);
-
-						//EnemyController->MoveTo(MoveRequest);
-
-
-
-					}
-
-				}
-			}
+		CheckPatrolTarget();
 		}
 	}
+
+
+
+void AEnemy::CheckPatrolTarget()
+{
+	if (PatrolActor && EnemyController)
+	{
+
+		if (InTheRange(PatrolActor, PatrolRadius)) {
+
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Patrol Target Reached , Moving to New Patrol Point"));
+
+			int32 PatrolTarget = PatrolPoints.Num();
+
+			if (PatrolTarget > 0)
+			{
+				int32 RandomIndex = FMath::RandRange(0, PatrolTarget - 1);
+
+				AActor* NewPatrolPoint = PatrolPoints[RandomIndex];
+
+
+				PatrolActor = NewPatrolPoint;
+				//FAIMoveRequest MoveRequest;
+				//MoveRequest.SetGoalActor(PatrolActor);
+				//MoveRequest.SetAcceptanceRadius(5.f);
+				GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, 10);
+
+				//EnemyController->MoveTo(MoveRequest);
+
+
+
+			}
+
+		}
+	}
+}
 
 
 
