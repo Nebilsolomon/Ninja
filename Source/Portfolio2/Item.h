@@ -72,8 +72,10 @@ public:
 
  
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	UStaticMeshComponent* ItemMesh; 
+
+	
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
     class USphereComponent* Sphere;

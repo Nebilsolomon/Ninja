@@ -17,9 +17,12 @@ AItem::AItem()
     // Set this actor to call Tick() every frame
     PrimaryActorTick.bCanEverTick = true;
 
+	
+
     // Create mesh and set as root
     ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshG"));
     RootComponent = ItemMesh;
+
 
     // Disable mesh collision
     ItemMesh->SetSimulatePhysics(false);
