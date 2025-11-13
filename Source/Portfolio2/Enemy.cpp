@@ -108,8 +108,10 @@ void AEnemy::Tick(float DeltaTime)
 
 
 		CheckPatrolTarget();
-		}
+		
 	}
+	
+}
 
 
 
@@ -281,7 +283,8 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 
 
 	CombatActor = EventInstigator->GetPawn();
-
+	EnemyState = EEnemyState::EES_Chasing;
+	MoveToTarget(CombatActor);
 
 	return DamageAmount;
 
