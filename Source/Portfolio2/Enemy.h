@@ -118,6 +118,7 @@ public:
 
    UPROPERTY(EditAnywhere)
    double CombatRadius = 500; 
+	// double CombatRadius = 1000;
 
    UPROPERTY(EditAnywhere)
    double AttackRadius = 150; 

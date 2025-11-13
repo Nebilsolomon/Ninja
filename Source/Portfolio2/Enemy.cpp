@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Enemy.h"
@@ -388,12 +388,63 @@ void AEnemy::OnPawnSeen(APawn* SeenPawn)
 	    EnemyState = EEnemyState::EES_Chasing;
 		
 		MoveToTarget(CombatActor);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("nebil"));
 
 		}
 
 
 	}
 }
+
+
+
+
+
+
+
+void AEnemy::CheckCombatTarget()
+{
+	// 1️⃣ Inside combat radius
+	if (InTheRange(CombatActor, CombatRadius))
+	{
+		// 2️⃣ Inside attack radius
+		if (InTheRange(CombatActor, AttackRadius))
+		{
+			if (EnemyState != EEnemyState::EES_Attacking)
+			{
+				EnemyState = EEnemyState::EES_Attacking;
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Silver, TEXT("Attacking Target"));
+			}
+		}
+		// 3️⃣ Between attack and combat radius (so chasing)
+		else if (EnemyState != EEnemyState::EES_Chasing)
+		{
+			EnemyState = EEnemyState::EES_Chasing;
+			GetCharacterMovement()->MaxWalkSpeed = 300;
+			MoveToTarget(CombatActor);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Chasing Target"));
+		}
+	}
+	// 4️⃣ Outside combat radius
+	else
+	{
+		CombatActor = nullptr;
+		HealthBar->SetVisibility(false);
+		EnemyState = EEnemyState::EES_Patrolling;
+		GetCharacterMovement()->MaxWalkSpeed = 150;
+		MoveToTarget(PatrolActor);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, TEXT("Lost Sight of Target, Returning to Patrol"));
+	}
+}
+
+
+
+
+
+
+/*
+
+
 
 void AEnemy::CheckCombatTarget()
 {
@@ -435,4 +486,5 @@ void AEnemy::CheckCombatTarget()
 
 
 
+*/
 
