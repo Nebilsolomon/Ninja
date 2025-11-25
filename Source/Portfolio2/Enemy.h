@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "HitInterface.h"
+#include "BaseCharacter.h"
 #include "CharacterType.h"
 #include "NiagaraSystem.h"
 #include "Enemy.generated.h"
@@ -13,8 +12,9 @@
 
 
 
+
 UCLASS()
-class PORTFOLIO2_API AEnemy : public ACharacter, public IHitInterface
+class PORTFOLIO2_API AEnemy : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -41,40 +41,27 @@ public:
 	
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 
-	void HitReact(const FVector& ImpactPoint);
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 
-	void PlayEnemyMontage(FName name);
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Montage")
-	UAnimMontage* EnemyMontage;
+	
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Montage")
-	UAnimMontage* DeathMontage;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
-	USoundBase* HitSound;
 
 
-	UPROPERTY(EditAnywhere , Category = "Niagara")
-	class UNiagaraSystem* BloodNiagara;
 
-
-	UPROPERTY(EditAnywhere, Category = "HealthAttribute")
-
-
-	class UAttributeComponent* AttributeHealth;
+	
 	
 	UPROPERTY(EditAnywhere, Category = "HealthBar")
 
 	class UHealthBarComponent* HealthBar;
 
-	void Die();
+	void Die() override;
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DeathPose")
@@ -117,6 +104,8 @@ public:
    class UPawnSensingComponent* PawnSensingComp;
    UFUNCTION()
    void OnPawnSeen(APawn* SeenPawn);
+
+
 
    UPROPERTY(EditAnywhere)
    double CombatRadius = 500; 

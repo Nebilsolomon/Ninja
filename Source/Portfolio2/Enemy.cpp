@@ -19,10 +19,9 @@
 
 
 
-
+#include "AttributeComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
-#include "AttributeComponent.h"
 #include "HealthBarComponent.h"
 
 
@@ -44,7 +43,6 @@ AEnemy::AEnemy()
 
 
 
-	AttributeHealth = CreateDefaultSubobject<UAttributeComponent>(TEXT("AttributeHealth"));
 	HealthBar = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBar->SetupAttachment(GetRootComponent());
 
@@ -53,7 +51,7 @@ AEnemy::AEnemy()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	
+
 	
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 	
@@ -227,39 +225,7 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
 
 		}
 
-void AEnemy::HitReact(const FVector& ImpactPoint)
-{
 
-	FVector forward = GetActorForwardVector();
-
-	FVector ToHit = (ImpactPoint - GetActorLocation()).GetSafeNormal();
-
-	double CosTheta = FVector::DotProduct(forward, ToHit);
-
-	double Theta = FMath::Acos(CosTheta);
-
-	Theta = FMath::RadiansToDegrees(Theta);
-
-	FVector CrossProduct = FVector::CrossProduct(forward, ToHit);
-
-	if (CrossProduct.Z < 0) {
-		Theta = -Theta;
-	}
-
-
-	if (Theta >= -45 && Theta < 45) {
-		PlayEnemyMontage(FName("Front"));
-	}
-	else if (Theta >= 45 && Theta < 135) {
-		PlayEnemyMontage(FName("Right"));
-	}
-	else if (Theta >= -135 && Theta < -45) {
-		PlayEnemyMontage(FName("Left"));
-	}
-	else {
-		PlayEnemyMontage(FName("Back"));
-	}
-}
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -294,16 +260,7 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 
 
 
-void AEnemy::PlayEnemyMontage(FName name)
-{
 
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && EnemyMontage) {
-		AnimInstance->Montage_Play(EnemyMontage, 1.f);
-		AnimInstance->Montage_JumpToSection(name, EnemyMontage);
-	}
-
-}
 
 void AEnemy::Die()
 {

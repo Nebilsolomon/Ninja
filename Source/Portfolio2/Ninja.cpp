@@ -227,6 +227,9 @@ void ANinja::SetEquippedWeapon(AItem* ItemToSet)
 
 void ANinja::Attack() {
 
+
+	Super::Attack();
+
 	if (ActionState == EActionState::EAS_Unoccupied && CharacterState == ECharacterState::ECS_EquippedOneHanded) {
 
 		PlayAttackMontage();
@@ -319,8 +322,8 @@ void ANinja::PlayAttackMontage() {
 
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && nebil) {
-		AnimInstance->Montage_Play(nebil, 1.f);
+	if (AnimInstance && AttackMontage) {
+		AnimInstance->Montage_Play(AttackMontage, 1.f);
 		FName nameSection;
 		int32 SectionNumber = FMath::RandRange(1, 2);
 		switch (SectionNumber) {
@@ -333,7 +336,7 @@ void ANinja::PlayAttackMontage() {
 		default:
 			break;
 		}
-		AnimInstance->Montage_JumpToSection(nameSection, nebil);
+		AnimInstance->Montage_JumpToSection(nameSection, AttackMontage);
 
 	}
 }

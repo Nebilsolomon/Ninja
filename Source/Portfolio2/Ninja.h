@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"
 #include "CharacterType.h"
 #include "Ninja.generated.h"
 
@@ -15,7 +15,7 @@
 
 
 UCLASS()
-class PORTFOLIO2_API ANinja : public ACharacter
+class PORTFOLIO2_API ANinja : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -58,8 +58,9 @@ public:
 	void SetEquippedWeapon(class AItem* ItemToSet);
 	
 	
-   void Attack();
-   void PlayAttackMontage();
+   void Attack() override;
+
+   void PlayAttackMontage() override;
 
    void PlayEquipMontage(FName SectionName);
 
@@ -67,8 +68,7 @@ public:
    bool CanDisarm();
 
 
-	UFUNCTION(BlueprintCallable)
-	void AttackEnd();
+	void AttackEnd() override;
 
 	UFUNCTION(BlueprintCallable)
 	void AttachSwordToBack();
@@ -94,8 +94,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ITemWeapon")
 	class AItem* Weapon;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipped")
-	class AWeapon* EquipWeapon;
+	
 
 
 	
@@ -105,8 +104,7 @@ public:
 	UAnimMontage* CombatMontage;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	UAnimMontage* nebil;
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipped")
 	UAnimMontage* equipMontage;
