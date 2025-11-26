@@ -240,8 +240,7 @@ UGameplayStatics::ApplyDamage(
 
 
 
-
-void AWeapon::Equip(class ANinja* Char, FName SocketName) {
+void AWeapon::Equip(class ACharacter* Char, FName SocketName) {
 	if (Char) {
 		// Attach the weapon to the character's hand
 	

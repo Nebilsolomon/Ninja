@@ -14,6 +14,7 @@
 #include "AIController.h"
 #include "NavigationSystem.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "Weapon.h"
 
 
 
@@ -75,6 +76,16 @@ void AEnemy::BeginPlay()
 	
 	//GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, 18);
 		PawnSensingComp->OnSeePawn.AddDynamic(this, &AEnemy::OnPawnSeen);
+
+		UWorld* World = GetWorld();
+		if (World) {
+
+			AWeapon* SpawnedWeapon = World->SpawnActor<AWeapon>(WeaponClass);
+			if (SpawnedWeapon) {
+				SpawnedWeapon->Equip(this, FName("RightHandSocket"));
+			}
+
+		}
 
 	}
 	

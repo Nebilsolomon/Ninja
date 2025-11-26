@@ -26,9 +26,10 @@ AItem::AItem()
 
     // Disable mesh collision
     ItemMesh->SetSimulatePhysics(false);
-    ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
+    //ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     // Create Sphere component for overlap detection
+	ItemMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
     Sphere->SetupAttachment(RootComponent);
 

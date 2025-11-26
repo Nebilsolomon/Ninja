@@ -33,6 +33,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
+
+
 	void CheckPatrolTarget();
 
 	// Called to bind functionality to input
@@ -43,16 +46,6 @@ public:
 
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-
-
-
-
-	
-
-
-
-
-
 
 
 	
@@ -115,5 +108,9 @@ public:
    double AttackRadius = 150; 
 
    void CheckCombatTarget();
+
+
+   UPROPERTY(EditAnywhere, Category = "WeaponX")
+   TSubclassOf<class AWeapon> WeaponClass;
 };
 
