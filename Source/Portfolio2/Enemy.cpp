@@ -116,7 +116,7 @@ void AEnemy::Tick(float DeltaTime)
 		else {
 
 
-		CheckPatrolTarget();
+		   CheckPatrolTarget();
 		
 	}
 	
@@ -390,8 +390,9 @@ void AEnemy::CheckCombatTarget()
 		{
 			if (EnemyState != EEnemyState::EES_Attacking)
 			{
-				EnemyState = EEnemyState::EES_Attacking;
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Silver, TEXT("Attacking Target"));
+				StartTimerAttack();
+				
 			}
 		}
 		// 3️⃣ Between attack and combat radius (so chasing)
@@ -400,6 +401,8 @@ void AEnemy::CheckCombatTarget()
 			EnemyState = EEnemyState::EES_Chasing;
 			GetCharacterMovement()->MaxWalkSpeed = 300;
 			MoveToTarget(CombatActor);
+			GetWorldTimerManager().ClearTimer(AttackTimer);
+
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Chasing Target"));
 		}
 	}
@@ -414,6 +417,56 @@ void AEnemy::CheckCombatTarget()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, TEXT("Lost Sight of Target, Returning to Patrol"));
 	}
 }
+
+void AEnemy::Attack()
+{
+
+	Super::Attack();
+
+	PlayAttackMontage();
+
+}
+
+void AEnemy::PlayAttackMontage()
+{
+
+	Super::PlayAttackMontage();
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && AttackMontage) {
+		AnimInstance->Montage_Play(AttackMontage, 1.f);
+		FName nameSection;
+		int32 SectionNumber = FMath::RandRange(1, 1);
+		switch (SectionNumber) {
+		case 1:
+			nameSection = FName("Attack1");
+			break;
+		case 2:
+			nameSection = FName("Attack2");
+			break;
+		default:
+			break;
+		}
+		AnimInstance->Montage_JumpToSection(FName("Attack2"), AttackMontage);
+
+	}
+}
+
+void AEnemy::StartTimerAttack()
+{
+	EnemyState = EEnemyState::EES_Attacking;
+	const float AttackTime = FMath::RandRange(Attackmin, AttackMax);
+	//GetWorldTimerManager().SetTimer(AttackTimer,this,&AEnemy::Attack,AttackTime,false);
+
+
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &AEnemy::Attack, AttackTime, true);
+
+
+
+}
+
+
+
+
 
 
 

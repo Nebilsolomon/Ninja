@@ -112,5 +112,25 @@ public:
 
    UPROPERTY(EditAnywhere, Category = "WeaponX")
    TSubclassOf<class AWeapon> WeaponClass;
+
+    void Attack() override;
+
+	void PlayAttackMontage() override;
+
+
+	/*
+	
+	Combat
+	*/
+
+	void StartTimerAttack();
+	FTimerHandle AttackTimer; 
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float Attackmin = 0.5; 
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float AttackMax = 1; 
+
 };
 
