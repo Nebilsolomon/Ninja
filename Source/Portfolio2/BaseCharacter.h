@@ -30,8 +30,8 @@ protected:
 	virtual void Attack();
 	virtual void PlayAttackMontage();
 	virtual bool CanAttack();
-	void HitReact(const FVector& ImpactPoint);
-	void PlayEnemyMontage(FName name);
+	virtual void HitReact(const FVector& ImpactPoint);
+	virtual void PlayEnemyMontage(FName name);
 
 
 	virtual void Die();

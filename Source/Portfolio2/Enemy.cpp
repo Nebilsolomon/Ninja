@@ -110,13 +110,14 @@ void AEnemy::Tick(float DeltaTime)
 		{
 
 
+
 			CheckCombatTarget();
 		}
 	}
 		else {
 
 
-		   CheckPatrolTarget();
+	    CheckPatrolTarget();
 		
 	}
 	
@@ -143,12 +144,12 @@ void AEnemy::CheckPatrolTarget()
 
 
 				PatrolActor = NewPatrolPoint;
-				//FAIMoveRequest MoveRequest;
-				//MoveRequest.SetGoalActor(PatrolActor);
-				//MoveRequest.SetAcceptanceRadius(5.f);
-				GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, 10);
+				FAIMoveRequest MoveRequest;
+				MoveRequest.SetGoalActor(PatrolActor);
+				MoveRequest.SetAcceptanceRadius(5.f);
+				//GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::StartPatrolTimer, 10);
 
-				//EnemyController->MoveTo(MoveRequest);
+				EnemyController->MoveTo(MoveRequest);
 
 
 
@@ -327,7 +328,7 @@ bool AEnemy::InTheRange(AActor* Target, double Radius)
 	return Distance <= Radius;
 }
 
-void AEnemy::PatrolTimerFinished()
+void AEnemy::StartPatrolTimer()
 {
 	MoveToTarget(PatrolActor);
 }
@@ -341,7 +342,7 @@ void AEnemy::MoveToTarget(AActor* Target)
 //	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("AI Controller found and moving to Patrol Actor"));
 	FAIMoveRequest MoveRequest;
 	MoveRequest.SetGoalActor(Target);
-	MoveRequest.SetAcceptanceRadius(5.f);
+	MoveRequest.SetAcceptanceRadius(70);
 	EnemyController->MoveTo(MoveRequest);
 
 }
@@ -355,7 +356,7 @@ void AEnemy::OnPawnSeen(APawn* SeenPawn)
 
 		if (EnemyState == EEnemyState::EES_Chasing) return; 
 		
-	    GetWorldTimerManager().ClearTimer(PatrolTimer);
+	    //GetWorldTimerManager().ClearTimer(PatrolTimer);
 		GetCharacterMovement()->MaxWalkSpeed = 300;
 
 		CombatActor = SeenPawn;
@@ -388,11 +389,11 @@ void AEnemy::CheckCombatTarget()
 		// 2️⃣ Inside attack radius
 		if (InTheRange(CombatActor, AttackRadius))
 		{
-			if (EnemyState != EEnemyState::EES_Attacking)
+			if (EnemyState != EEnemyState::EES_Attacking  && EnemyState != EEnemyState::EES_Engaged)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Silver, TEXT("Attacking Target"));
+				EnemyState = EEnemyState::EES_Attacking;
 				StartTimerAttack();
-				
 			}
 		}
 		// 3️⃣ Between attack and combat radius (so chasing)
@@ -404,6 +405,7 @@ void AEnemy::CheckCombatTarget()
 			GetWorldTimerManager().ClearTimer(AttackTimer);
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Chasing Target"));
+
 		}
 	}
 	// 4️⃣ Outside combat radius
@@ -414,17 +416,32 @@ void AEnemy::CheckCombatTarget()
 		EnemyState = EEnemyState::EES_Patrolling;
 		GetCharacterMovement()->MaxWalkSpeed = 150;
 		MoveToTarget(PatrolActor);
+		GetWorldTimerManager().ClearTimer(AttackTimer);
+
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, TEXT("Lost Sight of Target, Returning to Patrol"));
+
 	}
 }
 
 void AEnemy::Attack()
 {
+	EnemyState = EEnemyState::EES_Engaged;
+
+
+	//EnemyState = EEnemyState::EES_Engaged;
+
 
 	Super::Attack();
 
-	PlayAttackMontage();
+      PlayAttackMontage();
+	  
 
+		
+
+
+
+		//PlayAttackMontage();
+	
 }
 
 void AEnemy::PlayAttackMontage()
@@ -451,6 +468,8 @@ void AEnemy::PlayAttackMontage()
 	}
 }
 
+
+
 void AEnemy::StartTimerAttack()
 {
 	EnemyState = EEnemyState::EES_Attacking;
@@ -458,7 +477,7 @@ void AEnemy::StartTimerAttack()
 	//GetWorldTimerManager().SetTimer(AttackTimer,this,&AEnemy::Attack,AttackTime,false);
 
 
-	GetWorldTimerManager().SetTimer(AttackTimer, this, &AEnemy::Attack, AttackTime, true);
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &AEnemy::Attack, AttackTime, false);
 
 
 
@@ -468,45 +487,14 @@ void AEnemy::StartTimerAttack()
 
 
 
-
-
-
-
-
-/*
-
-
-
-void AEnemy::CheckCombatTarget()
+void AEnemy::AttackEnd()
 {
-	if (!InTheRange(CombatActor, CombatRadius))
-	{
-		CombatActor = nullptr;
-		HealthBar->SetVisibility(false);
+	EnemyState = EEnemyState::EES_NoState;
 
-		EnemyState = EEnemyState::EES_Patrolling;
-		GetCharacterMovement()->MaxWalkSpeed = 150;
-		MoveToTarget(PatrolActor);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Attack Ended"));
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, TEXT("Lost Sight of Target, Returning to Patrol"));
-	}else if (!InTheRange(CombatActor, AttackRadius) && EnemyState != EEnemyState::EES_Chasing)
-	{
+	///CheckCombatTarget();
 
-		EnemyState = EEnemyState::EES_Chasing;
-		GetCharacterMovement()->MaxWalkSpeed = 300;
-		MoveToTarget(CombatActor);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Chasing Target"));
-
-	}
-	else if (InTheRange(CombatActor, AttackRadius) && EnemyState != EEnemyState::EES_Attacking)
-	{
-		EnemyState = EEnemyState::EES_Attacking;
-		// EnemyAttack();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Silver, TEXT("Attacking Target"));
-
-	
-	
-	}
 
 }
 
@@ -516,6 +504,4 @@ void AEnemy::CheckCombatTarget()
 
 
 
-
-*/
 

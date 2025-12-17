@@ -87,7 +87,7 @@ public:
 
 
    FTimerHandle PatrolTimer;
-   void PatrolTimerFinished();
+   void StartPatrolTimer();
 
 
    void MoveToTarget(AActor* Target);
@@ -105,7 +105,7 @@ public:
 	// double CombatRadius = 1000;
 
    UPROPERTY(EditAnywhere)
-   double AttackRadius = 150; 
+   double AttackRadius = 200; 
 
    void CheckCombatTarget();
 
@@ -117,6 +117,8 @@ public:
 
 	void PlayAttackMontage() override;
 
+	void AttackEnd() override;
+
 
 	/*
 	
@@ -127,10 +129,14 @@ public:
 	FTimerHandle AttackTimer; 
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	float Attackmin = 0.5; 
+	//float Attackmin = 0.5; 
+		float Attackmin = 1; 
+
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	float AttackMax = 1; 
+	//float AttackMax = 1;
+	float AttackMax = 2; 
+
 
 };
 
