@@ -9,6 +9,7 @@
 
 #include "BaseCharacter.h"
 #include "AttributeComponent.h"
+#include "Components/CapsuleComponent.h"
 
 
 
@@ -20,6 +21,7 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	AttributeHealth = CreateDefaultSubobject<UAttributeComponent>(TEXT("AttributeHealth"));
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 
 
 }
